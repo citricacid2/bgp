@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { useEffect, useState } from "react";
 import Dice from "react-dice-roll";
 import Modal from "react-modal";
@@ -8,11 +7,14 @@ import shuffle from "shuffle-array";
 export default function Home() {
   shuffle(questions);
 
-  const firstQuestion = questions.pop();
+  // const firstQuestion = questions.pop();
 
-  const [question, setQuestion] = useState(firstQuestion.question);
-  const [correctAnswer, setCorrectAnswer] = useState(firstQuestion.answer);
-  const [image, setImage] = useState(firstQuestion.image);
+  // const [question, setQuestion] = useState(firstQuestion.question);
+  // const [correctAnswer, setCorrectAnswer] = useState(firstQuestion.answer);
+  // const [image, setImage] = useState(firstQuestion.image);
+  const [question, setQuestion] = useState(null);
+  const [correctAnswer, setCorrectAnswer] = useState(null);
+  const [image, setImage] = useState(null);
   const [questionNumber, setQuestionNumber] = useState(1);
 
   const [diceValue, setDiceValue] = useState(null);
@@ -21,12 +23,16 @@ export default function Home() {
   const [answer, setAnswer] = useState(null);
   const [correct, setCorrect] = useState(null);
 
+  console.log(questions)
+
   const makeQuestion = () => {
     const q = questions.pop();
     setQuestion(q.question);
     setCorrectAnswer(q.answer);
-    setImage(q.image)
+    setImage(q.image);
   };
+
+  useEffect(makeQuestion, [])
 
   const reset = () => {
     setCorrect(null);
@@ -75,9 +81,7 @@ export default function Home() {
                     Question #{questionNumber}
                   </h2>
                   <h3 className="text-xl pt-3">{question}</h3>
-                  {image &&
-                    <img src={image} alt="" className="h-52 mx-auto"/>
-                  }
+                  {image && <img src={image} alt="" className="h-52 mx-auto" />}
                   {correctAnswer !== "" ? (
                     <div>
                       <input
@@ -97,7 +101,10 @@ export default function Home() {
                     <div>
                       <button
                         className="bg-blue-500 px-4 py-2 mt-5 text-white rounded-xl mx-3"
-                        onClick={() => setModalOpen(false)}
+                        onClick={() => {
+                          setModalOpen(false);
+                          reset();
+                        }}
                       >
                         Continue
                       </button>
@@ -154,7 +161,7 @@ export default function Home() {
             onClick={reset}
             disabled={correctAnswer === null}
           >
-            Restart
+            New Turn
           </button>
         </div>
       </div>
