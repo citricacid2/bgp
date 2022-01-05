@@ -2,21 +2,18 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import Dice from "react-dice-roll";
 import Modal from "react-modal";
+import questions from "./questions.json";
+import shuffle from "shuffle-array";
 
 export default function Home() {
-  let questions = [
-    {
-      question: "what is the solution to the french revolution",
-      answer: "lorem ipsum",
-    },
-    {
-      question: "what is the solution to the french revolution",
-      answer: "lorem ipsum",
-    },
-  ];
-  const firstQuestion = questions.pop()
-  const [question, setQuestion] = useState(firstQuestion.question)
-  const [correctAnswer, setCorrectAnswer] = useState(firstQuestion.answer)
+  shuffle(questions);
+
+  const firstQuestion = questions.pop();
+
+  const [question, setQuestion] = useState(firstQuestion.question);
+  const [correctAnswer, setCorrectAnswer] = useState(firstQuestion.answer);
+  const [image, setImage] = useState(firstQuestion.image);
+  const [questionNumber, setQuestionNumber] = useState(1);
 
   const [diceValue, setDiceValue] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -25,10 +22,20 @@ export default function Home() {
   const [correct, setCorrect] = useState(null);
 
   const makeQuestion = () => {
-    const q = questions.pop()
-    setQuestion(q.question)
-    setAnswer(q.answer)
-  }
+    const q = questions.pop();
+    setQuestion(q.question);
+    setCorrectAnswer(q.answer);
+    setImage(q.image)
+  };
+
+  const reset = () => {
+    setCorrect(null);
+    setDiceValue(null);
+    setAnswer(null);
+    setCorrect(null);
+    setQuestionNumber(questionNumber + 1);
+    makeQuestion();
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3">
@@ -64,29 +71,45 @@ export default function Home() {
             <div className="p-5 text-center">
               {!answer && (
                 <div>
-                  <h2 className="text-2xl font-bold">Question #1</h2>
-                  <h3 className="text-xl pt-3">
-                    What is the solution to the French revolution?
-                  </h3>
-                  <input
-                    type="text"
-                    className="rounded-xl border-2 p-2 mt-5"
-                    placeholder="What is your answer?"
-                    onChange={(event) => setVal(event.target.value)}
-                  />
-                  <button
-                    className="bg-blue-500 px-4 py-2 mt-5 text-white rounded-xl mx-3"
-                    onClick={() => setAnswer(val)}
-                  >
-                    Submit
-                  </button>
+                  <h2 className="text-2xl font-bold">
+                    Question #{questionNumber}
+                  </h2>
+                  <h3 className="text-xl pt-3">{question}</h3>
+                  {image &&
+                    <img src={image} alt="" className="h-52 mx-auto"/>
+                  }
+                  {correctAnswer !== "" ? (
+                    <div>
+                      <input
+                        type="text"
+                        className="rounded-xl border-2 p-2 mt-5"
+                        placeholder="What is your answer?"
+                        onChange={(event) => setVal(event.target.value)}
+                      />
+                      <button
+                        className="bg-blue-500 px-4 py-2 mt-5 text-white rounded-xl mx-3"
+                        onClick={() => setAnswer(val)}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <button
+                        className="bg-blue-500 px-4 py-2 mt-5 text-white rounded-xl mx-3"
+                        onClick={() => setModalOpen(false)}
+                      >
+                        Continue
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
 
               {answer && (
                 <div>
                   <p>Your answer: {answer}</p>
-                  <p>Correct answer: yes</p>
+                  <p>Correct answer: {correctAnswer}</p>
                   <button
                     className="bg-green-500 px-4 py-2 mt-5 text-white rounded-xl mx-3"
                     onClick={() => {
@@ -128,13 +151,8 @@ export default function Home() {
           </p>
           <button
             className="bg-blue-500 px-4 py-2 mt-5 text-white rounded-xl mx-3"
-            onClick={() => {
-              setCorrect(null);
-              setDiceValue(null);
-              setAnswer(null);
-              setCorrect(null)
-              makeQuestion()
-            }}
+            onClick={reset}
+            disabled={correctAnswer === null}
           >
             Restart
           </button>
