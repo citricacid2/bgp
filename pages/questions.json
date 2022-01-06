@@ -225,9 +225,14 @@
     "image": ""
   },
   {
+    "question": "What was the Directory?",
+    "answer": "THe government set up by the revolution",
+    "image": ""
+  },
+  {
     "question": "Which group is unfairly represented and taxed?",
     "answer": "Commoners",
-    "image": "https://francinemassue.weebly.com/uploads/1/3/0/9/13091251/editor/3estates.jpg?1494208546 "
+    "image": "https://francinemassue.weebly.com/uploads/1/3/0/9/13091251/editor/3estates.jpg?1494208546"
   },
   {
     "question": "Who was this?",
@@ -276,6 +281,26 @@
   },
   {
     "question": "You were part of the Bastille riot and you were able to successfully raid the prison and gain a financial advantage. Move forward 3 spaces",
+    "answer": "",
+    "image": ""
+  },
+  {
+    "question": "You were caught attempting to storm the Bastille. Move back 5 spaces",
+    "answer": "",
+    "image": ""
+  },
+  {
+    "question": "You were caught sneaking around the palace grounds. Move back 3 spaces.",
+    "answer": "",
+    "image": ""
+  },
+  {
+    "question": "You need to hide from the monarchy. Skip your next turn.",
+    "answer": "",
+    "image": ""
+  },
+  {
+    "question": "You gain materials from the resistance. You may choose to skip 1 negative roll in your upcoming turns.",
     "answer": "",
     "image": ""
   }
